@@ -1,0 +1,23 @@
+{%  load rest_framework %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Entry</title>
+</head>
+<body>
+    <ul>
+        {% for blog in blogs %}
+        <li>{{ blog.title }}</li>
+        {% endfor %}
+    </ul>
+    <p>Create a new blog</p>
+    <form action="blog/new/" method="POST" name="newBlog">
+        {% csrf_token %}
+        {% render_form serializer %}
+        Title: <input type="text" name="title"><br />
+        Content: <input type="textarea" name="text"><br />
+        <input type="submit" value="Publish">
+    </form>
+</body>
+</html>
