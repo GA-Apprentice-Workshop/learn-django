@@ -2,8 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 from .factories import AuthorFactory, BlogFactory
 
-# Create your tests here.
-
 
 class TestBlogView(TestCase):
     def setup(self):

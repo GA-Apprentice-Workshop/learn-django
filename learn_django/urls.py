@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from learn_django.apps.portal import views
 
 urlpatterns = [
@@ -23,7 +24,9 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^$', views.login_view, name='login-view'),
-    url(r'^login/$', views.login_view, name='login'),
+    url(r'^$', auth_views.login, {'template_name': 'login.html'}),
+    url(r'^login/$', auth_views.login),
+    url(r'^signup/$', views.signup_view, name='signup'),
+    url(r'^profile/$', views.profile_view, name='profile'),
     url(r'^blog/', include('learn_django.apps.blog.urls')),
 ]

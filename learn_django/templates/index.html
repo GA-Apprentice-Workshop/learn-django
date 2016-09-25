@@ -6,10 +6,10 @@
 </head>
 <body>
     <p>Welcome to Blogging!</p>
-    <form action="login/" method="post">
-        Username: <input type="text" name="username"><br />
-        Password: <input type="password" name="password"><br />
-        <input type="submit" value="Login">
-    </form>
+    <ul>
+        <li><a href="{{ home }}">Home</a></li>
+        <li><a href="{% url django.contrib.auth.views.login %}?next=blog"></a></li>
+        <li><a href="{% url django.contrib.auth.views.logout %}?next="></a></li>
+    </ul>
 </body>
 </html>

@@ -4,9 +4,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 
 
 class Blog(models.Model):
+    """
+    Creates an instace of :model:`blog.Blog`, which is an article submitted by Authors.
+    """
     author = models.ForeignKey('Author', related_name='blogs')
     title = models.CharField(max_length=75)
-    text = models.TextField()
+    text = models.TextField(help_text='Content of the blog entry. May include HTML.')
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -15,6 +18,9 @@ class Blog(models.Model):
 
 
 class CustomUserManager(BaseUserManager):
+    """
+    Custom management for the :model:`blog.Author` model.
+    """
     def create_user(self, username, **kwargs):
         user = self.model(
             is_staff=True,
@@ -29,6 +35,10 @@ class CustomUserManager(BaseUserManager):
 
 
 class Author(User):
+    """
+    Creates an instance of :model:`blog.Author` based on :model:`auth.User`. Provides
+    is_staff permissions for blog editors.
+    """
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
 
     USERNAME_FIELD = 'uuid'
