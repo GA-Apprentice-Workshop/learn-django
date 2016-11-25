@@ -6,6 +6,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 class Blog(models.Model):
     """
     Creates an instace of :model:`blog.Blog`, which is an article submitted by Authors.
+
+    About Related Objects:
+    https://docs.djangoproject.com/en/1.10/ref/models/relations/
+
+    Author.blog methods: .add(), .create(), clear(), .remove(), .all(), .set()
     """
     author = models.ForeignKey('Author', related_name='blogs')
     title = models.CharField(max_length=75)
@@ -16,10 +21,17 @@ class Blog(models.Model):
     class Meta:
         ordering = ('created',)
 
+    def __str__(self):
+        return "{0.title}".format(self)
+
 
 class CustomUserManager(BaseUserManager):
     """
     Custom management for the :model:`blog.Author` model.
+
+    Learn more about :model: `django.contrib.auth.models.User` model
+    https://docs.djangoproject.com/en/1.10/topics/auth/default/#user-objects
+
     """
     def create_user(self, username, **kwargs):
         user = self.model(
@@ -39,9 +51,10 @@ class Author(User):
     Creates an instance of :model:`blog.Author` based on :model:`auth.User`. Provides
     is_staff permissions for blog editors.
     """
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, unique=True)
+    # Make a charfield so Django won't complain about TypeErrors from UI
+    uuid = models.CharField(primary_key=True, default=uuid.uuid4, unique=True, max_length=32)
 
-    USERNAME_FIELD = 'uuid'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     objects = CustomUserManager()
@@ -54,5 +67,5 @@ class Author(User):
         """
         ordering = ('last_name',)
 
-    def _repr_(self):
+    def _str_(self):
         return "{0.first_name} {0.last_name} <{0.email}>".format(self)

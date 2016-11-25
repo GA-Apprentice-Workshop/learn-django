@@ -1,4 +1,5 @@
-"""learn_django URL Configuration
+"""
+learn_django URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -15,8 +16,9 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
-from learn_django.apps.portal import views
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+
+from learn_django.portal import views
 
 urlpatterns = [
     # Django expects to send requests to a callable function.
@@ -24,9 +26,17 @@ urlpatterns = [
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^$', auth_views.login, {'template_name': 'login.html'}),
-    url(r'^login/$', auth_views.login),
+    url(r'^$', views.index_view, name='home'),
+    # url('^', include('django.contrib.auth.urls')),
+    # url(r'^login/$', views.login_view, name='home'),
+    url(r'^login/$', views.login_view, name='login'),
+    url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^signup/$', views.signup_view, name='signup'),
     url(r'^profile/$', views.profile_view, name='profile'),
-    url(r'^blog/', include('learn_django.apps.blog.urls')),
+    url(r'^blog/', include('learn_django.blog.urls')),
+    # JWT Auth
+    url(r'^auth/', obtain_jwt_token),
+    url(r'^refresh/', refresh_jwt_token),
+    # API
+    url(r'^api/v1/', include('learn_django.api_urls')),
 ]
