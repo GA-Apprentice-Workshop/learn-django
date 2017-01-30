@@ -21,6 +21,8 @@ ViewSet is used with rest_framework.routers
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
 
 from .models import Author, Blog
 from .serializers import AuthorSerializer, BlogSerializer
@@ -67,6 +69,11 @@ class BlogViewSet(ModelViewSet):
     serializer_class = BlogSerializer
     queryset = Blog.objects.all()
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    renderer_classes = (TemplateHTMLRenderer,)
+
+    def retrieve(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return Response({'blog': self.object}, template_name='blog/show.html')
 
 
 class AuthorViewSet(ModelViewSet):

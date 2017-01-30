@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('text', models.TextField()),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blogs', to='learn_django.blog.Author')),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='blogs', to='blog.Author')),
             ],
         ),
     ]

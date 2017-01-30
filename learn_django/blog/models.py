@@ -35,6 +35,7 @@ class CustomUserManager(BaseUserManager):
     """
     def create_user(self, username, **kwargs):
         user = self.model(
+            username=username,
             is_staff=True,
             **kwargs
         )
